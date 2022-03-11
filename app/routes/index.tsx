@@ -4,6 +4,11 @@ export default function Index() {
       <h1>Welcome to Remix</h1>
       <ul>
         <li>
+          <a target="_blank" href="https://everest.agency" rel="noreferrer">
+            Everest
+          </a>
+        </li>
+        <li>
           <a
             target="_blank"
             href="https://remix.run/tutorials/blog"
@@ -24,6 +29,11 @@ export default function Index() {
         <li>
           <a target="_blank" href="https://remix.run/docs" rel="noreferrer">
             Remix Docs
+          </a>
+        </li>
+        <li>
+          <a target="_blank" href="https://docs.commercetools.com/api" rel="noreferrer">
+            Commercetools API Docs
           </a>
         </li>
       </ul>
