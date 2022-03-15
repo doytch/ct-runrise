@@ -23,5 +23,7 @@ module.exports = {
     'no-unused-vars': [2, { argsIgnorePattern: '^_' }],
     'react/jsx-filename-extension': [2, { extensions: ['.js', '.jsx', '.tsx'] }],
     'react/react-in-jsx-scope': 0,
+    'react/prop-types': 0,
+    'no-console': 0,
   },
 };
