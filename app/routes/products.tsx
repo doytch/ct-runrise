@@ -1,5 +1,6 @@
 import { json, useLoaderData } from 'remix';
 import ctClient from '~/helpers/ctClient';
+import ProductList from '~/components/ProductList';
 
 export async function loader() {
   console.time('/product-projections/search');
@@ -54,12 +55,7 @@ export default function Products() {
         Show Next
       </button>
       <div>
-        {products.map(product => (
-          <div key={product.id}>
-            <div>{product.name}</div>
-            <img src={product.masterVariant?.images?.[0]?.url} width={200} alt="" />
-          </div>
-        ))}
+        <ProductList products={products} />
       </div>
     </>
   );

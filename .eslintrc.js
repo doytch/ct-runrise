@@ -25,6 +25,7 @@ module.exports = {
     'no-console': 0,
     'no-unused-vars': [2, { argsIgnorePattern: '^_' }],
     'prefer-destructuring': 0,
+    'react/function-component-definition': 0,
     'react/jsx-filename-extension': [2, { extensions: ['.js', '.jsx', '.tsx'] }],
     'react/react-in-jsx-scope': 0,
     'react/prop-types': 0,
