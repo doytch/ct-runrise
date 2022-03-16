@@ -3,32 +3,64 @@ import ctClient from '~/helpers/ctClient';
 
 export async function loader() {
   console.time('/product-projections/search');
-  const products = await ctClient
-    .productProjections()
-    .search()
-    .get({
-      queryArgs: {
-        staged: false,
-        markMatchingVariants: false,
+  const response = await ctClient
+    .graphql()
+    .post({
+      body: {
+        query: `
+        query {
+          productProjectionSearch(staged:false, limit:20, sorts:"name.en asc") {
+            offset,
+            count,
+            total,
+            results {
+              id, 
+              key,
+              name(locale: "en"),
+              masterVariant {
+                images {
+                  url
+                }
+              }
+            }  
+          }
+        }`,
       },
     })
-    .execute();
+    .execute()
+    .catch(error => {
+      console.error('Error fetching from Commercetools');
+      console.error(error);
+    });
 
-  console.timeEnd('/product-projections/search');
-  return json(products.body.results);
+  const data = response.body.data?.productProjectionSearch;
+
+  return json(data);
 }
 
 export default function Products() {
-  const products = useLoaderData();
+  const { results: products, offset, count, total } = useLoaderData();
 
   return (
     <>
       <h1>Products</h1>
-      <ul>
+      <h3>
+        Showing {offset} - {offset + count} / {total}
+      </h3>
+      <button type="button" disabled={offset !== 0}>
+        Show Previous
+      </button>
+      <button type="button" disabled={offset < count - offset}>
+        Show Next
+      </button>
+      <div>
         {products.map(product => (
-          <li key={product.id}>{product.name.en}</li>
+          <div key={product.id}>
+            <div>{product.name}</div>
+            <img src={product.masterVariant?.images?.[0]?.url} width={200} alt="" />
+          </div>
         ))}
-      </ul>
+      </div>
     </>
   );
 }

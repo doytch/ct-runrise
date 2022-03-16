@@ -13,15 +13,11 @@
     "start": "cross-env NODE_ENV=production netlify dev"
   },
   "dependencies": {
-    "@commercetools/sdk-client": "^2.1.2",
-    "@commercetools/sdk-middleware-auth": "^6.2.1",
-    "@commercetools/sdk-middleware-http": "^6.2.0",
-    "@commercetools/typescript-sdk": "^0.0.22",
+    "@commercetools/platform-sdk": "^2.5.0",
+    "@commercetools/sdk-client-v2": "^1.2.0",
     "@netlify/functions": "^0.10.0",
     "@remix-run/netlify": "^1.2.3",
     "@remix-run/react": "^1.2.3",
-    "dotenv": "^16.0.0",
-    "node-fetch": "^3.2.3",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "remix": "^1.2.3"
@@ -46,6 +42,6 @@
     "typescript": "^4.5.5"
   },
   "engines": {
-    "node": ">=14"
+    "node": ">=16"
   }
 }
