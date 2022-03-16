@@ -4,11 +4,13 @@ import { Box, Grid, Paper, Typography } from '@mui/material';
 const Product = ({ id, name, imageUrl, masterVariant }) => (
   <Grid item xs={6} md={4}>
     <Paper elevation={3} style={{ textAlign: 'center' }}>
-      <Typography style={{ height: '4em', padding: 4, color: '#222' }}>{name}</Typography>
+      <Box style={{ height: '4em', display: 'flex' }}>
+        <Typography style={{ margin: 'auto', padding: 4, color: '#222' }}>{name}</Typography>
+      </Box>
       <img
         style={{ maxWidth: '100%', maxHeight: '100%' }}
         src={masterVariant?.images?.[0]?.url}
-        width={200}
+        height={300}
         alt={name}
       />
     </Paper>

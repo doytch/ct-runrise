@@ -22,6 +22,7 @@ module.exports = {
   plugins: ['react', '@typescript-eslint'],
   rules: {
     'import/extensions': 0,
+    'import/prefer-default-export': 0,
     'no-console': 0,
     'no-unused-vars': [2, { argsIgnorePattern: '^_' }],
     'prefer-destructuring': 0,

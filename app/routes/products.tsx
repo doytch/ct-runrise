@@ -1,16 +1,21 @@
 import { json, useLoaderData } from 'remix';
+import type { LoaderFunction } from 'remix';
 import ctClient from '~/helpers/ctClient';
 import ProductList from '~/components/ProductList';
+import { getErrorMessage } from '~/utils';
+import { Button, Box } from '@mui/material';
 
-export async function loader() {
-  console.time('/product-projections/search');
+export const loader: LoaderFunction = async ({ request }) => {
+  const url = new URL(request.url);
+  const offset = url.searchParams.get('offset') ?? '0';
+
   const response = await ctClient
     .graphql()
     .post({
       body: {
         query: `
         query {
-          productProjectionSearch(staged:false, limit:20, sorts:"name.en asc") {
+          productProjectionSearch(staged:false, offset:${offset} limit:20, sorts:"name.en asc") {
             offset,
             count,
             total,
@@ -29,18 +34,23 @@ export async function loader() {
       },
     })
     .execute()
-    .catch(error => {
-      console.error('Error fetching from Commercetools');
-      console.error(error);
+    .catch((error: unknown) => {
+      console.error(getErrorMessage(error));
     });
 
   const data = response.body.data?.productProjectionSearch;
 
   return json(data);
-}
+};
 
 export default function Products() {
   const { results: products, offset, count, total } = useLoaderData();
+
+  const changeProductOffset = (advance: Boolean) => {
+    let path = `${window.location.pathname}?`;
+    path += `offset=${advance ? offset + 20 : offset - 20}`;
+    window.location.assign(path);
+  };
 
   return (
     <>
@@ -48,12 +58,24 @@ export default function Products() {
       <h3>
         Showing {offset} - {offset + count} / {total}
       </h3>
-      <button type="button" disabled={offset !== 0}>
-        Show Previous
-      </button>
-      <button type="button" disabled={offset < count - offset}>
-        Show Next
-      </button>
+      <Box style={{ textAlign: 'center' }}>
+        <Button
+          style={{ margin: '0 8px', minWidth: 200 }}
+          type="button"
+          disabled={offset === 0}
+          onClick={() => changeProductOffset(false)}
+        >
+          Show Previous
+        </Button>
+        <Button
+          style={{ margin: '0 8px', minWidth: 200 }}
+          type="button"
+          disabled={offset > total - count}
+          onClick={() => changeProductOffset(true)}
+        >
+          Show Next
+        </Button>
+      </Box>
       <div>
         <ProductList products={products} />
       </div>
