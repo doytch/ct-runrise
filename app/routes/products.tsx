@@ -2,18 +2,24 @@ import { useLoaderData } from 'remix';
 import ctClient from '~/helpers/ctClient';
 
 export async function loader() {
+  console.time('/product-projections/search');
   const products = await ctClient
     .productProjections()
-    .get({ queryArgs: { staged: false } })
+    .search()
+    .get({
+      queryArgs: {
+        staged: false,
+        markMatchingVariants: false,
+      },
+    })
     .execute();
 
+  console.timeEnd('/product-projections/search');
   return products.body.results;
 }
 
 export default function Products() {
   const products = useLoaderData();
-
-  console.log(products);
 
   return (
     <>
