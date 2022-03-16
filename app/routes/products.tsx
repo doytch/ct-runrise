@@ -1,4 +1,4 @@
-import { useLoaderData } from 'remix';
+import { json, useLoaderData } from 'remix';
 import ctClient from '~/helpers/ctClient';
 
 export async function loader() {
@@ -15,7 +15,7 @@ export async function loader() {
     .execute();
 
   console.timeEnd('/product-projections/search');
-  return products.body.results;
+  return json(products.body.results);
 }
 
 export default function Products() {
@@ -31,4 +31,10 @@ export default function Products() {
       </ul>
     </>
   );
+}
+
+export function headers() {
+  return {
+    'cache-control': 'max-age=604800, stale-while-revalidate=86400',
+  };
 }
