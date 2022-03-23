@@ -6,7 +6,7 @@ import {
 
 import { createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
 
-const { CTP_PROJECT_KEY, CTP_CLIENT_SECRET, CTP_CLIENT_ID, CTP_AUTH_URL, CTP_API_URL, CTP_SCOPES } =
+const { CTP_PROJECT_KEY, CTP_CLIENT_SECRET, CTP_CLIENT_ID, CTP_AUTH_URL, CTP_API_URL } =
   process.env;
 
 if (!CTP_PROJECT_KEY) {

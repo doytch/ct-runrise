@@ -6,6 +6,7 @@ module.exports = {
   extends: [
     'plugin:react/recommended',
     'plugin:react/jsx-runtime',
+    'plugin:react-hooks/recommended',
     'airbnb',
     'plugin:import/typescript',
     'prettier', // Disables stuff that Prettier already handles
@@ -28,6 +29,8 @@ module.exports = {
     'prefer-destructuring': 0,
     'react/function-component-definition': 0,
     'react/jsx-filename-extension': [2, { extensions: ['.js', '.jsx', '.tsx'] }],
+    'react/jsx-sort-props': 2,
+    'react/no-unused-prop-types': 0,
     'react/react-in-jsx-scope': 0,
     'react/prop-types': 0,
   },

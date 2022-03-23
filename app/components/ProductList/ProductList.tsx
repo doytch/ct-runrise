@@ -1,23 +1,23 @@
-import { styled } from '@mui/material/styles';
+import { ProductProjection } from '@commercetools/platform-sdk';
 import { Box, Grid, Paper, Typography } from '@mui/material';
 
-const Product = ({ id, name, imageUrl, masterVariant }) => (
-  <Grid item xs={6} md={4}>
+const Product = ({ name, masterVariant }: ProductProjection): JSX.Element => (
+  <Grid item md={4} xs={6}>
     <Paper elevation={3} style={{ textAlign: 'center' }}>
       <Box style={{ height: '4em', display: 'flex' }}>
         <Typography style={{ margin: 'auto', padding: 4, color: '#222' }}>{name}</Typography>
       </Box>
       <img
-        style={{ maxWidth: '100%', maxHeight: '100%' }}
-        src={masterVariant?.images?.[0]?.url}
-        height={300}
         alt={name}
+        height={300}
+        src={masterVariant?.images?.[0]?.url}
+        style={{ maxWidth: '100%', maxHeight: '100%' }}
       />
     </Paper>
   </Grid>
 );
 
-const ProductList: React.FC<Props> = ({ products }) => (
+export const ProductList = ({ products }: { products: Array<ProductProjection> }): JSX.Element => (
   <Box sx={{ flexGrow: 1 }}>
     <Grid container spacing={2}>
       {products.map(product => (
@@ -27,5 +27,3 @@ const ProductList: React.FC<Props> = ({ products }) => (
     </Grid>
   </Box>
 );
-
-export default ProductList;

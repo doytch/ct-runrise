@@ -1,9 +1,9 @@
-import { json, useLoaderData } from 'remix';
+import { json, useLoaderData, Link } from 'remix';
 import type { LoaderFunction } from 'remix';
 import ctClient from '~/helpers/ctClient';
-import ProductList from '~/components/ProductList';
+import { ProductList } from '~/components/ProductList';
 import { getErrorMessage } from '~/utils';
-import { Button, Box } from '@mui/material';
+import { Button, Box, Typography } from '@mui/material';
 
 export const loader: LoaderFunction = async ({ request }) => {
   const url = new URL(request.url);
@@ -43,35 +43,36 @@ export const loader: LoaderFunction = async ({ request }) => {
   return json(data);
 };
 
-export default function Products() {
+export default function Products({ pathname = '/products' }) {
   const { results: products, offset, count, total } = useLoaderData();
 
-  const changeProductOffset = (advance: Boolean) => {
-    let path = `${window.location.pathname}?`;
-    path += `offset=${advance ? offset + 20 : offset - 20}`;
-    window.location.assign(path);
-  };
+  const urlNext = `${pathname}?offset=${offset + 20}`;
+  const urlPrev = `${pathname}?offset=${offset - 20}`;
 
   return (
     <>
-      <h1>Products</h1>
-      <h3>
+      <Typography variant="h2">Products</Typography>
+      <Typography style={{ textAlign: 'center' }} variant="h6">
         Showing {offset} - {offset + count} / {total}
-      </h3>
+      </Typography>
       <Box style={{ textAlign: 'center' }}>
         <Button
-          style={{ margin: '0 8px', minWidth: 200 }}
-          type="button"
+          component={Link}
           disabled={offset === 0}
-          onClick={() => changeProductOffset(false)}
+          prefetch="intent"
+          style={{ margin: '0 8px', minWidth: 200 }}
+          to={urlPrev}
+          type="button"
         >
           Show Previous
         </Button>
         <Button
-          style={{ margin: '0 8px', minWidth: 200 }}
-          type="button"
+          component={Link}
           disabled={offset > total - count}
-          onClick={() => changeProductOffset(true)}
+          prefetch="intent"
+          style={{ margin: '0 8px', minWidth: 200 }}
+          to={urlNext}
+          type="button"
         >
           Show Next
         </Button>
