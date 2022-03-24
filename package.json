@@ -17,6 +17,7 @@
     "@commercetools/sdk-client-v2": "^1.2.0",
     "@emotion/react": "^11.8.2",
     "@emotion/styled": "^11.8.1",
+    "@mui/icons-material": "^5.5.1",
     "@mui/material": "^5.5.1",
     "@netlify/functions": "^0.10.0",
     "@remix-run/netlify": "^1.2.3",
