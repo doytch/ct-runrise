@@ -8,6 +8,7 @@ module.exports = {
     'plugin:react/jsx-runtime',
     'plugin:react-hooks/recommended',
     'airbnb',
+    'plugin:import/recommended',
     'plugin:import/typescript',
     'prettier', // Disables stuff that Prettier already handles
   ],
@@ -25,6 +26,7 @@ module.exports = {
     'import/extensions': 0,
     'import/prefer-default-export': 0,
     'no-console': 0,
+    'no-undef': 0, // typescript-eslint recommends not using this
     'no-unused-vars': [2, { argsIgnorePattern: '^_' }],
     'prefer-destructuring': 0,
     'react/function-component-definition': 0,
@@ -33,6 +35,8 @@ module.exports = {
     'react/no-unused-prop-types': 0,
     'react/react-in-jsx-scope': 0,
     'react/prop-types': 0,
+    'react-hooks/rules-of-hooks': [2],
+    'react-hooks/exhaustive-deps': [2],
   },
   settings: {
     // The typescript stuff does a variety of things but mostly we have it so that

@@ -1,4 +1,6 @@
 import { createRequestHandler } from '@remix-run/netlify';
+// This is a devDependency according to Remix boilerplate.
+// eslint-disable-next-line import/no-extraneous-dependencies
 import * as build from '@remix-run/dev/server-build';
 
 /*

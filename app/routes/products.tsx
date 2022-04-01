@@ -1,18 +1,17 @@
-import { json, useLoaderData, Link, Form, useSearchParams } from 'remix';
+import { Form, Link, json, useLoaderData, useSearchParams } from 'remix';
 import type { LoaderFunction } from 'remix';
-import {
-  Button,
-  Box,
-  Typography,
-  TextField,
-  IconButton,
-  InputAdornment,
-  Alert,
-} from '@mui/material';
+
+import Alert from '@mui/material/Alert';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import InputAdornment from '@mui/material/InputAdornment';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 import SearchIcon from '@mui/icons-material/Search';
 
-import ctClient from '~/helpers/ctClient';
 import { ProductList } from '~/components/ProductList';
+import ctClient from '~/helpers/ctClient';
 import { getErrorMessage } from '~/utils';
 
 export const loader: LoaderFunction = async ({ request }) => {
