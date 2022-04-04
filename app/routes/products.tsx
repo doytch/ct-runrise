@@ -1,4 +1,4 @@
-import { Form, Link, json, useLoaderData, useSearchParams } from 'remix';
+import { Form, Link, json, useLoaderData, useSearchParams, MetaFunction } from 'remix';
 import type { LoaderFunction } from 'remix';
 
 import Alert from '@mui/material/Alert';
@@ -13,6 +13,8 @@ import SearchIcon from '@mui/icons-material/Search';
 import { ProductList } from '~/components/ProductList';
 import ctClient from '~/helpers/ctClient';
 import { getErrorMessage } from '~/utils';
+
+export const meta: MetaFunction = () => ({ title: 'Products' });
 
 export const loader: LoaderFunction = async ({ request }) => {
   const url = new URL(request.url);
@@ -36,23 +38,23 @@ export const loader: LoaderFunction = async ({ request }) => {
       .post({
         body: {
           query: `
-        query {
-          productProjectionSearch(${params.join(', ')}) {
-            offset,
-            count,
-            total,
-            results {
-              id, 
-              key,
-              name(locale:"en"),
-              masterVariant {
-                images {
-                  url
-                }
+            query {
+              productProjectionSearch(${params.join(', ')}) {
+                offset,
+                count,
+                total,
+                results {
+                  id, 
+                  key,
+                  name(locale:"en"),
+                  masterVariant {
+                    images {
+                      url
+                    }
+                  }
+                }  
               }
-            }  
-          }
-        }`,
+            }`,
         },
       })
       .execute();
@@ -88,7 +90,6 @@ export default function Products() {
 
   return (
     <>
-      <Typography variant="h2">Products</Typography>
       {Array.isArray(errors) &&
         errors.map(error => (
           <Alert key={error} severity="error">
