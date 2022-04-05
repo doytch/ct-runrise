@@ -2,7 +2,6 @@ import { Category, ProductProjection } from '@commercetools/platform-sdk';
 import {
   AppBar,
   Box,
-  Container,
   Divider,
   Drawer,
   IconButton,
@@ -67,56 +66,54 @@ export const NavBar = ({ categories }: { categories: Array<Category> }): JSX.Ele
 
   return (
     <AppBar position="static">
-      <Container maxWidth="xl">
-        <Toolbar>
-          <IconButton
-            aria-label="open drawer"
-            color="inherit"
-            edge="start"
-            onClick={openDrawer}
-            size="large"
-            sx={{ mr: 2 }}
+      <Toolbar>
+        <IconButton
+          aria-label="open drawer"
+          color="inherit"
+          edge="start"
+          onClick={openDrawer}
+          size="large"
+          sx={{ mr: 2 }}
+        >
+          <MenuIcon />{' '}
+        </IconButton>
+        <Drawer anchor="left" onClose={closeDrawer} open={drawerIsOpen}>
+          <Box
+            onClick={closeDrawer}
+            onKeyDown={closeDrawer}
+            role="presentation"
+            sx={{ width: 250 }}
           >
-            <MenuIcon />{' '}
-          </IconButton>
-          <Drawer anchor="left" onClose={closeDrawer} open={drawerIsOpen}>
-            <Box
-              onClick={closeDrawer}
-              onKeyDown={closeDrawer}
-              role="presentation"
-              sx={{ width: 250 }}
-            >
-              <List>
-                <ListItem button>
-                  <ListItemText primary="Close" />
+            <List>
+              <ListItem button>
+                <ListItemText primary="Close" />
+              </ListItem>
+              <Divider />
+              {categories.map(category => (
+                <ListItem key={category.key} button>
+                  <ListItemText primary={category.name} />
                 </ListItem>
-                <Divider />
-                {categories.map(category => (
-                  <ListItem key={category.key} button>
-                    <ListItemText primary={category.name} />
-                  </ListItem>
-                ))}
-              </List>
-            </Box>
-          </Drawer>
-          <Typography
-            component="div"
-            noWrap
-            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
-            variant="h6"
-          >
-            <Link style={{ color: '#fff', textDecoration: 'none' }} to="/">
-              remix.runrise
-            </Link>
-          </Typography>
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase inputProps={{ 'aria-label': 'search' }} placeholder="Search..." />
-          </Search>
-        </Toolbar>
-      </Container>
+              ))}
+            </List>
+          </Box>
+        </Drawer>
+        <Typography
+          component="div"
+          noWrap
+          sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+          variant="h6"
+        >
+          <Link style={{ color: '#fff', textDecoration: 'none' }} to="/">
+            remix.runrise
+          </Link>
+        </Typography>
+        <Search>
+          <SearchIconWrapper>
+            <SearchIcon />
+          </SearchIconWrapper>
+          <StyledInputBase inputProps={{ 'aria-label': 'search' }} placeholder="Search..." />
+        </Search>
+      </Toolbar>
     </AppBar>
   );
 };
