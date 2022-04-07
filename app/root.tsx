@@ -13,6 +13,7 @@ import type { MetaFunction } from 'remix';
 import { NavBar } from '~/components/NavBar';
 import { getCategories } from '~/helpers/categories.server';
 import { useLoaderData } from '@remix-run/react';
+import React from 'react';
 
 export const meta: MetaFunction = () => ({ title: 'New Remix App' });
 
@@ -21,9 +22,7 @@ export const loader: LoaderFunction = async () => {
   return json({ categories });
 };
 
-export default function App() {
-  const { categories = [] } = useLoaderData();
-
+function Document({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <head>
@@ -38,12 +37,22 @@ export default function App() {
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
       </head>
       <body style={{ margin: 0 }}>
-        <NavBar categories={categories} />
-        <Outlet />
-        <ScrollRestoration />
+        {children}
         <Scripts />
+        <ScrollRestoration />
         <LiveReload />
       </body>
     </html>
+  );
+}
+
+export default function App() {
+  const { categories = [] } = useLoaderData();
+
+  return (
+    <Document>
+      <NavBar categories={categories} />
+      <Outlet />
+    </Document>
   );
 }
