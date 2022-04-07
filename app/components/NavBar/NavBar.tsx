@@ -1,4 +1,4 @@
-import { Category, ProductProjection } from '@commercetools/platform-sdk';
+import { Category } from '@commercetools/platform-sdk';
 import {
   AppBar,
   Box,
@@ -15,7 +15,7 @@ import {
 import { styled, alpha } from '@mui/material/styles';
 import { Menu as MenuIcon, Search as SearchIcon } from '@mui/icons-material';
 import { useCallback, useState } from 'react';
-import { Link } from 'remix';
+import { Link, useSearchParams } from 'remix';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -60,6 +60,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export const NavBar = ({ categories }: { categories: Array<Category> }): JSX.Element => {
+  const [searchParams] = useSearchParams();
+
   const [drawerIsOpen, setDrawerIsOpen] = useState(false);
   const closeDrawer = useCallback(() => setDrawerIsOpen(false), []);
   const openDrawer = useCallback(() => setDrawerIsOpen(true), []);
@@ -107,12 +109,19 @@ export const NavBar = ({ categories }: { categories: Array<Category> }): JSX.Ele
             remix.runrise
           </Link>
         </Typography>
-        <Search>
-          <SearchIconWrapper>
-            <SearchIcon />
-          </SearchIconWrapper>
-          <StyledInputBase inputProps={{ 'aria-label': 'search' }} placeholder="Search..." />
-        </Search>
+        <form action="/products" method="get">
+          <Search>
+            <SearchIconWrapper>
+              <SearchIcon />
+            </SearchIconWrapper>
+            <StyledInputBase
+              defaultValue={searchParams.get('search') ?? undefined}
+              inputProps={{ 'aria-label': 'search' }}
+              name="search"
+              placeholder="Search..."
+            />
+          </Search>
+        </form>
       </Toolbar>
     </AppBar>
   );

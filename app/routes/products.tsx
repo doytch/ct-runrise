@@ -1,14 +1,10 @@
-import { Form, Link, json, useLoaderData, useSearchParams, MetaFunction } from 'remix';
+import { Link, json, useLoaderData, useSearchParams, MetaFunction } from 'remix';
 import type { LoaderFunction } from 'remix';
 
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import InputAdornment from '@mui/material/InputAdornment';
-import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import SearchIcon from '@mui/icons-material/Search';
 
 import { ProductList } from '~/components/ProductList';
 import ctClient from '~/helpers/ctClient';
@@ -97,24 +93,6 @@ export default function Products() {
           </Alert>
         ))}
       <Box style={{ textAlign: 'center' }}>
-        <Form method="get">
-          <TextField
-            defaultValue={searchParams.get('search') ?? undefined}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton type="submit">
-                    <SearchIcon />
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-            label="Search"
-            margin="normal"
-            name="search"
-            type="search"
-          />
-        </Form>
         <Typography variant="h6">
           Showing {offset} - {offset + count} / {total}
         </Typography>
