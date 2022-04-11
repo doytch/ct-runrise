@@ -1,14 +1,13 @@
 import { Link, json, useLoaderData, useSearchParams, MetaFunction } from 'remix';
 import type { LoaderFunction } from 'remix';
 
-import Alert from '@mui/material/Alert';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
+import { Alert, Pagination, PaginationItem, Stack } from '@mui/material';
 
 import { ProductList } from '~/components/ProductList';
 import ctClient from '~/helpers/ctClient';
 import { getErrorMessage } from '~/utils';
+
+const PAGE_SIZE = 20;
 
 export const meta: MetaFunction = () => ({ title: 'Products' });
 
@@ -16,7 +15,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   const url = new URL(request.url);
   const offset = url.searchParams.get('offset') ?? '0';
 
-  const params = ['staged:false', 'limit:20', `offset:${offset}`];
+  const params = ['staged:false', `limit:${PAGE_SIZE}`, `offset:${offset}`];
 
   const search = url.searchParams.get('search');
   if (search) {
@@ -76,13 +75,8 @@ export const loader: LoaderFunction = async ({ request }) => {
 };
 
 export default function Products() {
-  const { errors, results: products, offset, total, count } = useLoaderData();
-
+  const { errors, results: products, offset, total } = useLoaderData();
   const [searchParams] = useSearchParams();
-  searchParams.set('offset', String(offset + 20));
-  const urlNext = `?${searchParams.toString()}`;
-  searchParams.set('offset', String(offset - 20));
-  const urlPrev = `?${searchParams.toString()}`;
 
   return (
     <>
@@ -92,33 +86,45 @@ export default function Products() {
             {error}
           </Alert>
         ))}
-      <Box style={{ textAlign: 'center' }}>
-        <Typography variant="h6">
-          Showing {offset} - {offset + count} / {total}
-        </Typography>
-        <Box>
-          <Button
-            component={Link}
-            disabled={offset === 0}
-            prefetch="intent"
-            style={{ margin: '0 8px', minWidth: 200 }}
-            to={urlPrev}
-            type="button"
-          >
-            Show Previous
-          </Button>
-          <Button
-            component={Link}
-            disabled={offset + 20 > total - count}
-            prefetch="intent"
-            style={{ margin: '0 8px', minWidth: 200 }}
-            to={urlNext}
-            type="button"
-          >
-            Show Next
-          </Button>
-        </Box>
-      </Box>
+      <Stack spacing={2}>
+        <Pagination
+          color="secondary"
+          count={Math.ceil(total / PAGE_SIZE)}
+          page={Math.floor(offset / PAGE_SIZE) + 1}
+          renderItem={item => {
+            switch (item.type) {
+              case 'page': {
+                const destinationPage = (item?.page ?? 1) - 1;
+                if (destinationPage) {
+                  searchParams.set('offset', String(PAGE_SIZE * (item?.page ?? 1 - 1)));
+                } else {
+                  searchParams.delete('offset');
+                }
+                break;
+              }
+              case 'previous':
+                searchParams.set('offset', String(offset - PAGE_SIZE));
+                break;
+              case 'next':
+                searchParams.set('offset', String(offset + PAGE_SIZE));
+                break;
+              default:
+            }
+
+            return (
+              <PaginationItem
+                component={Link}
+                prefetch="intent"
+                to={`?${searchParams.toString()}`}
+                {...item} // eslint-disable-line react/jsx-props-no-spreading
+              />
+            );
+          }}
+          style={{
+            margin: '16px auto',
+          }}
+        />
+      </Stack>
       <ProductList products={products} />
     </>
   );
