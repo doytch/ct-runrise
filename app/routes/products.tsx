@@ -96,7 +96,7 @@ export default function Products() {
               case 'page': {
                 const destinationPage = (item?.page ?? 1) - 1;
                 if (destinationPage) {
-                  searchParams.set('offset', String(PAGE_SIZE * (item?.page ?? 1 - 1)));
+                  searchParams.set('offset', String(PAGE_SIZE * destinationPage));
                 } else {
                   searchParams.delete('offset');
                 }
