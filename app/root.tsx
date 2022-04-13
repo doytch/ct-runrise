@@ -7,13 +7,20 @@ import {
   Scripts,
   ScrollRestoration,
   json,
+  LinksFunction,
 } from 'remix';
 import type { MetaFunction } from 'remix';
+import { useLoaderData } from '@remix-run/react';
 
 import { NavBar } from '~/components/NavBar';
 import { getCategories } from '~/helpers/categories.server';
-import { useLoaderData } from '@remix-run/react';
-import React from 'react';
+import robotoUrl from '~/styles/roboto.css';
+import materialIconsUrl from '~/styles/material-icons.css';
+
+export const links: LinksFunction = () => [
+  { rel: 'stylesheet', href: robotoUrl },
+  { rel: 'stylesheet', href: materialIconsUrl },
+];
 
 export const meta: MetaFunction = () => ({ title: 'New Remix App' });
 
@@ -30,11 +37,6 @@ function Document({ children }: { children: React.ReactNode }) {
         <meta content="width=device-width,initial-scale=1" name="viewport" />
         <Meta />
         <Links />
-        <link
-          href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
-          rel="stylesheet"
-        />
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
       </head>
       <body style={{ margin: 0 }}>
         {children}
