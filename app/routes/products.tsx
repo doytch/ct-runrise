@@ -16,6 +16,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   const offset = url.searchParams.get('offset') ?? '0';
 
   const params = ['staged:false', `limit:${PAGE_SIZE}`, `offset:${offset}`];
+  const filters = [];
 
   const search = url.searchParams.get('search');
   if (search) {
@@ -23,6 +24,15 @@ export const loader: LoaderFunction = async ({ request }) => {
     params.push('locale:"en"');
   } else {
     params.push('sorts:"name.en asc"');
+  }
+
+  const category = url.searchParams.get('category');
+  if (category) {
+    filters.push({ string: `categories.id:subtree(\\"${category}\\")` });
+  }
+
+  if (filters.length) {
+    params.push(`filters: [${filters.map(filter => `{ string: "${filter.string}" }`)}]`);
   }
 
   let response;

@@ -7,7 +7,7 @@ import {
   IconButton,
   InputBase,
   List,
-  ListItem,
+  ListItemButton,
   ListItemText,
   Toolbar,
   Typography,
@@ -15,7 +15,7 @@ import {
 import { styled, alpha } from '@mui/material/styles';
 import { Menu as MenuIcon, Search as SearchIcon } from '@mui/icons-material';
 import { useCallback, useState } from 'react';
-import { Link, useSearchParams } from 'remix';
+import { Form, Link, useSearchParams } from 'remix';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -61,6 +61,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export const NavBar = ({ categories }: { categories: Array<Category> }): JSX.Element => {
   const [searchParams] = useSearchParams();
+  const categoryParam = searchParams.get('category');
+  const searchParam = searchParams.get('search');
 
   const [drawerIsOpen, setDrawerIsOpen] = useState(false);
   const closeDrawer = useCallback(() => setDrawerIsOpen(false), []);
@@ -87,15 +89,25 @@ export const NavBar = ({ categories }: { categories: Array<Category> }): JSX.Ele
             sx={{ width: 250 }}
           >
             <List>
-              <ListItem button>
+              <ListItemButton>
                 <ListItemText primary="Close" />
-              </ListItem>
+              </ListItemButton>
               <Divider />
-              {categories.map(category => (
-                <ListItem key={category.key} button>
-                  <ListItemText primary={category.name} />
-                </ListItem>
-              ))}
+              <Form action={`/products${searchParam && `?search=${searchParam}`}`} method="get">
+                {categories.map(c => (
+                  <ListItemButton
+                    key={c.key}
+                    aria-label={`${c.name}`}
+                    component="button"
+                    name="category"
+                    style={{ width: '100%' }}
+                    type="submit"
+                    value={c.id}
+                  >
+                    <ListItemText primary={c.name} />
+                  </ListItemButton>
+                ))}
+              </Form>
             </List>
           </Box>
         </Drawer>
@@ -109,7 +121,7 @@ export const NavBar = ({ categories }: { categories: Array<Category> }): JSX.Ele
             remix.runrise
           </Link>
         </Typography>
-        <form action="/products" method="get">
+        <Form action={`/products${categoryParam && `?category=${categoryParam}`}`} method="get">
           <Search>
             <SearchIconWrapper>
               <SearchIcon />
@@ -121,7 +133,7 @@ export const NavBar = ({ categories }: { categories: Array<Category> }): JSX.Ele
               placeholder="Search..."
             />
           </Search>
-        </form>
+        </Form>
       </Toolbar>
     </AppBar>
   );

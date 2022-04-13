@@ -10,24 +10,28 @@ export async function getCategories() {
       .post({
         body: {
           query: `
+            fragment CategoryParts on Category {
+              name(locale:"en")
+              key
+              id
+            }
+
             query {
               categories(sort:"name.en asc", where:"parent is not defined") {
-              total
-              count
-              results {
-                name(locale:"en")
-                key
-                children {
-                  name(locale:"en")
-                  key
+                total
+                count
+                results {
+                  ...CategoryParts
                   children {
-                    name(locale:"en")
-                    key
+                    ...CategoryParts
+                    children {
+                      ...CategoryParts
+                    }
                   }
                 }
               }
             }
-          }`,
+          `,
         },
       })
       .execute();
@@ -45,6 +49,7 @@ export async function getCategories() {
   }
 
   if (response?.body?.data) {
+    console.log(response.body);
     return response.body.data.categories.results;
   }
 
